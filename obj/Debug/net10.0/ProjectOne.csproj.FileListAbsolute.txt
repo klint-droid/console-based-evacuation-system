@@ -12,3 +12,4 @@ C:\C# Projects\ProjectOne\obj\Debug\net10.0\refint\ProjectOne.dll
 C:\C# Projects\ProjectOne\obj\Debug\net10.0\ProjectOne.pdb
 C:\C# Projects\ProjectOne\obj\Debug\net10.0\ProjectOne.genruntimeconfig.cache
 C:\C# Projects\ProjectOne\obj\Debug\net10.0\ref\ProjectOne.dll
+C:\C# Projects\ProjectOne\obj\Debug\net10.0\ProjectOne.sourcelink.json

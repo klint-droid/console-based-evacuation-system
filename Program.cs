@@ -88,6 +88,7 @@ namespace ConsoleApp
                         {
                             Console.WriteLine($"{center.EvacuationCenterId}. {center.Name} - {center.Address} (Capacity: {center.Capacity}, Occupied: {center.CurrentOccupancy})");
                         }
+                        Console.WriteLine("====================================");
                         Console.Write("Household ID: ");
                         if(!int.TryParse(Console.ReadLine(), out int householdId))
                         {
@@ -121,6 +122,7 @@ namespace ConsoleApp
                         {
                             Console.WriteLine($"{household.HouseholdId}. {household.HeadName} - {household.Barangay} (Members: {household.MembersCount}) - Evacuated: {household.IsEvacuated} - Center: {household.EvacuationCenterAssigned}");
                         }
+                        Console.WriteLine("====================================");
                         Pause();
                         break;
                     case "5":
@@ -136,6 +138,7 @@ namespace ConsoleApp
                         {
                             Console.WriteLine($"{household.HouseholdId}. {household.HeadName} - {household.Barangay} (Members: {household.MembersCount}) - Center: {household.EvacuationCenterAssigned}");
                         }
+                        Console.WriteLine("====================================");
                         Pause();
                         break;
                     case "6":
@@ -151,6 +154,7 @@ namespace ConsoleApp
                         {
                             Console.WriteLine($"{household.HouseholdId}. {household.HeadName} - {household.Barangay} (Members: {household.MembersCount})");
                         }
+                        Console.WriteLine("====================================");
                         Pause();
                         break;
                     case "7":
