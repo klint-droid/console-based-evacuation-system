@@ -1,10 +1,38 @@
 ﻿using System;
+using System.Linq;
 using ProjectOne.Services;
+
 namespace ConsoleApp
 {
     class Program
     {
         static void Main()
+        {
+            if (Environment.GetEnvironmentVariable("CI") == "true")
+            {
+                RunCIMode();
+                return;
+            }
+
+            RunInteractiveMode();
+        }
+        static void RunCIMode()
+        {
+            Console.WriteLine("Running in CI mode...");
+
+            var service = new EvacuationService();
+
+            service.RegisterHousehold("Juan Dela Cruz", "Mabolo", 4);
+            service.RegisterHousehold("Maria Santos", "Lahug", 3);
+
+            var households = service.GetHouseholds();
+
+            Console.WriteLine($"Total Households: {households.Count}");
+
+            Console.WriteLine("CI execution completed successfully.");
+        }
+
+        static void RunInteractiveMode()
         {
             var service = new EvacuationService();
 
@@ -35,7 +63,7 @@ namespace ConsoleApp
                         string barangay = Console.ReadLine() ?? "";
 
                         Console.Write("Members Count: ");
-                        if(!int.TryParse(Console.ReadLine(), out int members))
+                        if (!int.TryParse(Console.ReadLine(), out int members))
                         {
                             Console.WriteLine("Invalid number of members.");
                             Pause();
@@ -46,51 +74,38 @@ namespace ConsoleApp
                         Console.WriteLine("Household registered successfully!");
                         Pause();
                         break;
+
                     case "2":
                         var centers = service.GetEvacuationCenters();
                         Console.WriteLine("Evacuation Centers:");
-                        if(centers.Count == 0)
+
+                        if (centers.Count == 0)
                         {
                             Console.WriteLine("No evacuation centers found.");
                             Pause();
                             break;
                         }
+
                         foreach (var center in centers)
                         {
                             Console.WriteLine($"{center.EvacuationCenterId}. {center.Name} - {center.Address} (Capacity: {center.Capacity}, Occupied: {center.CurrentOccupancy})");
                         }
+
                         Pause();
                         break;
+
                     case "3":
                         var householdsList = service.GetHouseholds();
-                        Console.WriteLine("Households List:");
-                        if(householdsList.Count == 0)
+
+                        if (householdsList.Count == 0)
                         {
                             Console.WriteLine("No households found.");
                             Pause();
                             break;
                         }
-                        foreach (var household in householdsList)
-                        {
-                            Console.WriteLine($"{household.HouseholdId}. {household.HeadName} - {household.Barangay} (Members: {household.MembersCount}) - Evacuated: {household.IsEvacuated} - Center: {household.EvacuationCenterAssigned}");
-                        }
-                        Console.WriteLine("====================================");
 
-                        Console.WriteLine("Evacuation Centers List:");
-                        var centersList = service.GetEvacuationCenters();
-                        if(centersList.Count == 0)
-                        {
-                            Console.WriteLine("No evacuation centers found.");
-                            Pause();
-                            break;
-                        }
-                        foreach (var center in centersList)
-                        {
-                            Console.WriteLine($"{center.EvacuationCenterId}. {center.Name} - {center.Address} (Capacity: {center.Capacity}, Occupied: {center.CurrentOccupancy})");
-                        }
-                        Console.WriteLine("====================================");
                         Console.Write("Household ID: ");
-                        if(!int.TryParse(Console.ReadLine(), out int householdId))
+                        if (!int.TryParse(Console.ReadLine(), out int householdId))
                         {
                             Console.WriteLine("Invalid household ID.");
                             Pause();
@@ -98,68 +113,75 @@ namespace ConsoleApp
                         }
 
                         Console.Write("Evacuation Center ID: ");
-                        if(!int.TryParse(Console.ReadLine(), out int centerId))
+                        if (!int.TryParse(Console.ReadLine(), out int centerId))
                         {
                             Console.WriteLine("Invalid evacuation center ID.");
                             Pause();
                             break;
                         }
-                        
+
                         string result = service.Evacuate(householdId, centerId);
                         Console.WriteLine(result);
                         Pause();
                         break;
+
                     case "4":
                         var households = service.GetHouseholds();
-                        Console.WriteLine("Households:");
-                        if(households.Count == 0)
+
+                        if (households.Count == 0)
                         {
                             Console.WriteLine("No households found.");
                             Pause();
                             break;
                         }
+
                         foreach (var household in households)
                         {
                             Console.WriteLine($"{household.HouseholdId}. {household.HeadName} - {household.Barangay} (Members: {household.MembersCount}) - Evacuated: {household.IsEvacuated} - Center: {household.EvacuationCenterAssigned}");
                         }
-                        Console.WriteLine("====================================");
+
                         Pause();
                         break;
+
                     case "5":
-                        var evacuatedHouseholds = service.GetHouseholds().Where(h => h.IsEvacuated);
-                        Console.WriteLine("Evacuated Households:");
-                        if(evacuatedHouseholds.Count() == 0)
+                        var evacuated = service.GetHouseholds().Where(h => h.IsEvacuated);
+
+                        if (!evacuated.Any())
                         {
                             Console.WriteLine("No evacuated households found.");
                             Pause();
                             break;
                         }
-                        foreach (var household in evacuatedHouseholds)
+
+                        foreach (var household in evacuated)
                         {
                             Console.WriteLine($"{household.HouseholdId}. {household.HeadName} - {household.Barangay} (Members: {household.MembersCount}) - Center: {household.EvacuationCenterAssigned}");
                         }
-                        Console.WriteLine("====================================");
+
                         Pause();
                         break;
+
                     case "6":
-                        var notEvacuatedHouseholds = service.GetHouseholds().Where(h => !h.IsEvacuated);
-                        Console.WriteLine("Not Evacuated Households:");
-                        if(notEvacuatedHouseholds.Count() == 0)
+                        var notEvacuated = service.GetHouseholds().Where(h => !h.IsEvacuated);
+
+                        if (!notEvacuated.Any())
                         {
                             Console.WriteLine("No not evacuated households found.");
                             Pause();
                             break;
                         }
-                        foreach (var household in notEvacuatedHouseholds)
+
+                        foreach (var household in notEvacuated)
                         {
                             Console.WriteLine($"{household.HouseholdId}. {household.HeadName} - {household.Barangay} (Members: {household.MembersCount})");
                         }
-                        Console.WriteLine("====================================");
+
                         Pause();
                         break;
+
                     case "7":
-                        Environment.Exit(0);
-                        break;
+                        return;
+
                     default:
                         Console.WriteLine("Invalid option.");
                         Pause();
@@ -170,11 +192,11 @@ namespace ConsoleApp
 
         static void Pause()
         {
-            if (Environment.GetEnvironmentVariable("CI") == "true")
-                return;
-
-            Console.WriteLine("Press any key to continue...");
-            Console.ReadKey();
+            if (!Console.IsInputRedirected)
+            {
+                Console.WriteLine("Press any key to continue...");
+                Console.ReadKey();
+            }
         }
     }
 }
