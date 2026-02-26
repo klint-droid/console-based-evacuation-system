@@ -23,7 +23,7 @@ namespace ConsoleApp
                 Console.WriteLine("7. Exit");
                 Console.Write("Select an option: ");
 
-                var choice = Console.ReadLine();
+                string? choice = Console.ReadLine();
 
                 switch (choice)
                 {
@@ -170,6 +170,9 @@ namespace ConsoleApp
 
         static void Pause()
         {
+            if (Environment.GetEnvironmentVariable("CI") == "true")
+                return;
+
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
         }
