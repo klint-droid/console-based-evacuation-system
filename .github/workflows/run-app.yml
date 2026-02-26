@@ -21,4 +21,4 @@ jobs:
         run: dotnet restore
 
       - name: Run application
-        run: dotnet run 
+        run: dotnet test
