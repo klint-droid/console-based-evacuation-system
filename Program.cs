@@ -8,7 +8,7 @@ namespace ConsoleApp
     {
         static void Main()
         {
-            if (Environment.GetEnvironmentVariable("CI") == "true")
+            if (Console.IsInputRedirected || Console.IsOutputRedirected)
             {
                 RunCIMode();
                 return;
