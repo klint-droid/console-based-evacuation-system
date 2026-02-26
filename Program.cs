@@ -29,10 +29,10 @@ namespace ConsoleApp
                 {
                     case "1":
                         Console.Write("HeadName: ");
-                        string name = Console.ReadLine();
+                        string name = Console.ReadLine() ?? "";
 
                         Console.Write("Barangay: ");
-                        string barangay = Console.ReadLine();
+                        string barangay = Console.ReadLine() ?? "";
 
                         Console.Write("Members Count: ");
                         if(!int.TryParse(Console.ReadLine(), out int members))
